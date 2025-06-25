@@ -1,0 +1,43 @@
+apiVersion: nais.io/v1alpha1
+kind: Application
+metadata:
+  name: oh-tilgangskontroll
+  namespace: oppgavehandtering
+  labels:
+    team: oppgavehandtering
+spec:
+  prometheus:
+    enabled: true
+    path: internal/metrics
+  observability:
+    tracing:
+      enabled: true
+  azure:
+    application:
+      enabled: true
+  accessPolicy:
+    outbound:
+      rules:
+        - application: populasjonstilgangskontroll
+          namespace: tilgangsmaskin
+    inbound:
+      rules:
+        - application: azure-token-generator
+          namespace: nais
+          cluster: dev-gcp
+        - application: oppgave
+          namespace: oppgavehandtering
+          cluster: dev-fss
+  image: {{image}}
+  port: 8080
+  liveness:
+    path: internal/health/live
+  readiness:
+    path: internal/health/ready
+  secureLogs:
+    enabled: true
+  env:
+    - name: TILGANGSMASKINEN_URL
+      value: http://tilgangsmaskin.populasjonstilgangskontroll
+    - name: TILGANSMASKINEN_SCOPE
+      value: api://dev-gcp.tilgangsmaskin.populasjonstilgangskontroll/.default
