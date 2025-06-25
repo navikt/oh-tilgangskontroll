@@ -2,42 +2,22 @@ name: build-deploy
 on:
   push:
     branches:
-      - 'main'
+      - '*'
+permissions:
+  contents: read
+  id-token: write
 jobs:
-  build-push:
-    name: Build and Push
-    runs-on: ubuntu-latest
-    permissions:
-      contents: "read"
-      id-token: "write"
-    outputs:
-      image: ${{ steps.docker-build-push.outputs.image }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-java@v3
-        with:
-          distribution: 'temurin'
-          java-version: '24'
-      - uses: gradle/actions/setup-gradle@v3
-      - name: Gradle build
-        run: ./gradlew build
-      - name: Build and push image and SBOM to OCI registry
-        uses: nais/docker-build-push@v0
-        id: docker-build-push
-        with:
-          team: oppgavehandtering
+  build:
+    name: Build
+    uses: navikt/oh-workflows/.github/workflows/build-backend.yml@main
+    with:
+      java-version: 24
+      build-tool: gradle
   deploy-dev:
-    name: Deploy to dev
-    needs: build-push
-    runs-on: ubuntu-latest
-    permissions:
-      contents: "read"
-      id-token: "write"
-    environment: dev-gcp:oppgavehandtering
-    steps:
-      - uses: actions/checkout@v4
-      - uses: nais/deploy/actions/deploy@v2
-        env:
-          CLUSTER: dev-gcp
-          RESOURCE: .nais/app-dev.yaml
-          VAR: image=${{ needs.build-push.outputs.image }}
+    name: Deploy
+    needs: build
+    uses: navikt/oh-workflows/.github/workflows/deploy-dev.yml@main
+    with:
+      image: ${{ needs.build.outputs.image }}
+      cluster: dev-gcp
+      environments: "['dev']"
