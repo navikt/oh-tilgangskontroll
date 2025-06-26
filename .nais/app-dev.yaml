@@ -6,6 +6,8 @@ metadata:
   labels:
     team: oppgavehandtering
 spec:
+  ingresses:
+    - "https://oh-tilgangskontroll.intern.dev.nav.no"
   prometheus:
     enabled: true
     path: internal/metrics
