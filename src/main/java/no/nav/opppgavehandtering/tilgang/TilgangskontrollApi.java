@@ -30,6 +30,10 @@ public class TilgangskontrollApi {
         Map<String, PopulasjonstilgangResultat> populasjonstilgangResultat = populasjonstilgang.kontroller(request.navident(), populasjonstilgangForesporsler);
         return request.tilgangskontrollDataSet().stream().map(input -> {
             PopulasjonstilgangResultat resultatForPersonident = populasjonstilgangResultat.get(input.personident());
+            if(resultatForPersonident == null) {
+                log.info("Input uten personident, godkjenner ift populasjonstilgang: {}", input);
+                return new TilgangskontrollResultat(input, true, null, null);
+            }
             return new TilgangskontrollResultat(input, resultatForPersonident.harTilgang(),
                     resultatForPersonident.harTilgang() ? null : TilgangskontrollResultat.Kode.valueOf(resultatForPersonident.tilgangAvvist().kode().name()),
                     resultatForPersonident.harTilgang() ? null : resultatForPersonident.tilgangAvvist().begrunnelse());
