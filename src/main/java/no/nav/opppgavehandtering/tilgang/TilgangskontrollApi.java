@@ -26,7 +26,7 @@ public class TilgangskontrollApi {
     @RunOnVirtualThread
     public Set<TilgangskontrollResultat> kontrollerTilgang(TilgangskontrollRequest request) {
         log.info("Kontrollerer tilgang for: {}", request.navident());
-        Set<PopulasjonstilgangRequest> populasjonstilgangForesporsler = request.tilgangskontrollDataSet().stream().map(s -> new PopulasjonstilgangRequest(s.personident())).collect(Collectors.toSet());
+        Set<PopulasjonstilgangRequest> populasjonstilgangForesporsler = request.tilgangskontrollDataSet().stream().filter(s -> s.personident() != null).map(s -> new PopulasjonstilgangRequest(s.personident())).collect(Collectors.toSet());
         Map<String, PopulasjonstilgangResultat> populasjonstilgangResultat = populasjonstilgang.kontroller(request.navident(), populasjonstilgangForesporsler);
         return request.tilgangskontrollDataSet().stream().map(input -> {
             PopulasjonstilgangResultat resultatForPersonident = populasjonstilgangResultat.get(input.personident());
