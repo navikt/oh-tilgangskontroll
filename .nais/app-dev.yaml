@@ -36,8 +36,8 @@ spec:
     path: internal/health/live
   readiness:
     path: internal/health/ready
-  secureLogs:
-    enabled: true
+#  secureLogs:
+#    enabled: true
   env:
     - name: TILGANGSMASKINEN_URL
       value: http://populasjonstilgangskontroll.tilgangsmaskin
