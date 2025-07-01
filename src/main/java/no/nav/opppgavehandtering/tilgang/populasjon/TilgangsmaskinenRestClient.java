@@ -14,7 +14,7 @@ public interface TilgangsmaskinenRestClient {
 
     @POST
     @Produces("application/json")
-    @Path("/api/v1/bulk/{navident}")
+    @Path("/api/v1/bulk/ccf{navident}")
     PopulasjonstilgangResponse kontrollerTilgang(String navident, Set<PopulasjonstilgangRequest> request);
 
 }
