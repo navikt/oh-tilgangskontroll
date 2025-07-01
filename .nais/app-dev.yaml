@@ -41,5 +41,5 @@ spec:
   env:
     - name: TILGANGSMASKINEN_URL
       value: http://populasjonstilgangskontroll.tilgangsmaskin
-    - name: TILGANSMASKINEN_SCOPE
+    - name: TILGANGSMASKINEN_SCOPE
       value: api://dev-gcp.tilgangsmaskin.populasjonstilgangskontroll/.default
