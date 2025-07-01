@@ -1,6 +1,6 @@
 package no.nav.opppgavehandtering.tilgang.populasjon;
 
-import io.smallrye.mutiny.Uni;
+import io.quarkus.oidc.client.filter.OidcClientFilter;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
@@ -9,13 +9,12 @@ import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 import java.util.Set;
 
 @RegisterRestClient(configKey = "tilgangsmaskinen")
-//@Retry(maxRetries = 2)
-//@Timeout(1000)
+@OidcClientFilter("tilgangsmaskinen-ccf")
 public interface TilgangsmaskinenRestClient {
 
     @POST
     @Produces("application/json")
-    @Path("/dev/bulk/{navident}")
+    @Path("/api/v1/bulk/{navident}")
     PopulasjonstilgangResponse kontrollerTilgang(String navident, Set<PopulasjonstilgangRequest> request);
 
 }
