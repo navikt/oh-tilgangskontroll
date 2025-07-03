@@ -28,4 +28,3 @@ jobs:
     with:
       image: ${{ needs.build.outputs.image }}
       cluster: prod-gcp
-      environments: "['prod']"
