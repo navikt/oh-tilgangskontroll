@@ -3,7 +3,7 @@ package no.nav.opppgavehandtering.tilgang;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public record TilgangskontrollResultat(TilgangskontrollData tilgangskontrollData, boolean harTilgang, Kode kode, String begrunnelse) {
+public record TilgangskontrollResultat(Long id, boolean harTilgang, Kode kode, String begrunnelse) {
     public enum Kode {
         AVVIST_STRENGT_FORTROLIG_ADRESSE,
         AVVIST_STRENGT_FORTROLIG_UTLAND,

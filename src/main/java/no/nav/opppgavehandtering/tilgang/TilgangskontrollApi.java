@@ -38,9 +38,9 @@ public class TilgangskontrollApi {
             PopulasjonstilgangResultat resultatForPersonident = populasjonstilgangResultat.get(input.personident());
             if(resultatForPersonident == null) {
                 log.info("Input uten personident, godkjenner ift populasjonstilgang: {}", input);
-                return new TilgangskontrollResultat(input, true, null, null);
+                return new TilgangskontrollResultat(input.id(), true, null, null);
             }
-            return new TilgangskontrollResultat(input, resultatForPersonident.harTilgang(),
+            return new TilgangskontrollResultat(input.id(), resultatForPersonident.harTilgang(),
                     resultatForPersonident.harTilgang() ? null : TilgangskontrollResultat.Kode.valueOf(resultatForPersonident.tilgangAvvist().kode().name()),
                     resultatForPersonident.harTilgang() ? null : resultatForPersonident.tilgangAvvist().begrunnelse());
         }).collect(Collectors.toSet());
