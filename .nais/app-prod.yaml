@@ -26,7 +26,7 @@ spec:
       rules:
         - application: oppgave
           namespace: oppgavehandtering
-          cluster: dev-fss
+          cluster: prod-fss
   image: {{image}}
   port: 8080
   liveness:
