@@ -1,0 +1,40 @@
+apiVersion: nais.io/v1alpha1
+kind: Application
+metadata:
+  name: oh-tilgangskontroll
+  namespace: oppgavehandtering
+  labels:
+    team: oppgavehandtering
+spec:
+  ingresses:
+    - "https://oh-tilgangskontroll.intern.nav.no"
+  prometheus:
+    enabled: true
+    path: internal/metrics
+  observability:
+    tracing:
+      enabled: true
+  azure:
+    application:
+      enabled: true
+  accessPolicy:
+    outbound:
+      rules:
+        - application: populasjonstilgangskontroll
+          namespace: tilgangsmaskin
+    inbound:
+      rules:
+        - application: oppgave
+          namespace: oppgavehandtering
+          cluster: dev-fss
+  image: {{image}}
+  port: 8080
+  liveness:
+    path: internal/health/live
+  readiness:
+    path: internal/health/ready
+  env:
+    - name: TILGANGSMASKINEN_URL
+      value: http://populasjonstilgangskontroll.tilgangsmaskin
+    - name: TILGANGSMASKINEN_SCOPE
+      value: api://prod-gcp.tilgangsmaskin.populasjonstilgangskontroll/.default

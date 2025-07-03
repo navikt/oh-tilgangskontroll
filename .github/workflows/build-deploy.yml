@@ -21,3 +21,11 @@ jobs:
       image: ${{ needs.build.outputs.image }}
       cluster: dev-gcp
       environments: "['dev']"
+  deploy-prod:
+    name: Deploy
+    needs: build
+    uses: navikt/oh-workflows/.github/workflows/deploy-prod.yml@main
+    with:
+      image: ${{ needs.build.outputs.image }}
+      cluster: prod-gcp
+      environments: "['prod']"
